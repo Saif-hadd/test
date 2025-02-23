@@ -1,0 +1,32 @@
+name: Deploy Application with Ansible
+
+on:
+  push:
+    branches:
+      - main  # Ou la branche de ton choix
+  pull_request:
+    branches:
+      - main  # Ou la branche de ton choix
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest  # Tu peux choisir une autre image si tu veux
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Ansible
+      uses: devops-infra/action-ansible-playbook@v1.0.0
+      with:
+        ansible-version: 2.10  # Ou la version que tu souhaites
+
+    - name: Set up Docker
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y docker.io docker-compose
+
+    - name: Run Ansible playbook
+      run: |
+        ansible-playbook -i inventory.ini deploy_app.yml --ask-become-pass
+
