@@ -1,0 +1,24 @@
+services:
+  frontend:
+    image: node:18
+    working_dir: /app
+    volumes:
+      - ./client:/app  # Monte ton dossier 'client' local dans le conteneur
+      - /app/node_modules  # Empêche les conflits avec node_modules local
+    command: sh -c "npm install && npm run dev"  # Lancement du serveur Vite en mode dev
+    ports:
+      - "5173:5173"  # Vite utilise par défaut le port 5173
+    depends_on:
+      backend:
+        condition: service_started  # Vérifie que le backend démarre avant
+    networks:
+      - my-network
+    environment:
+      - NODE_ENV=development
+      - VITE_API_URL=http://backend:5000  # Assure que le frontend peut communiquer avec le backend
+    stdin_open: true
+    tty: true
+
+networks:
+  my-network:
+    driver: bridge  # Utilisation du réseau bridge par défaut

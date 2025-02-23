@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  backend:
+    image: node:18
+    working_dir: /usr/src/app
+    volumes:
+      - ./server:/usr/src/app  # Monte ton dossier 'server' local dans le conteneur
+    command: sh -c "npm install && npm start"  # Installe et démarre le serveur Node.js
+    ports:
+      - "5000:5000"  # Mappe le port du backend
+    environment:
+      - NODE_ENV=production
+      - DB_HOST=db  # Utilise 'db' comme nom d'hôte pour la connexion à la base de données
+      - DB_USER=postgres
+      - DB_PASSWORD=password
+      - DB_NAME=mydb
+    depends_on:
+      - db  # Le backend dépend de la base de données PostgreSQL
+    networks:
+      - my-network  # Associer le backend au réseau personnalisé
+
+networks:
+  my-network:
+    driver: bridge  # Utilisation du réseau bridge par défaut
