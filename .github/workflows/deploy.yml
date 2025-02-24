@@ -17,7 +17,7 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Set up Ansible
-      uses: devops-infra/action-ansible-playbook@v2.0.0
+      uses: ansible/ansible-playbook-action@v2.0.0
       with:
         ansible-version: 2.10  # Ou la version que tu souhaites
 
@@ -29,5 +29,3 @@ jobs:
     - name: Run Ansible playbook
       run: |
         ansible-playbook -i inventory.ini deploy_app.yml --ask-become-pass
-        # Si tu utilises des secrets ou des variables supplémentaires, ajoute-les ici
-        # Exemple : ansible-playbook -i inventory.ini deploy_app.yml --extra-vars "variable=value"
