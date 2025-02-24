@@ -38,4 +38,4 @@ jobs:
 
     - name: Run Ansible playbook
       run: |
-        ansible-playbook -i inventory.ini deploy_app.yml --ask-become-pass
+        ansible-playbook -i inventory.ini deploy_app.yml --extra-vars "ansible_become_pass=saif"
