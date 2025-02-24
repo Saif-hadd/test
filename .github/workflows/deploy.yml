@@ -29,4 +29,5 @@ jobs:
     - name: Run Ansible playbook
       run: |
         ansible-playbook -i inventory.ini deploy_app.yml --ask-become-pass
-
+        # Si tu utilises des secrets ou des variables supplémentaires, ajoute-les ici
+        # Exemple : ansible-playbook -i inventory.ini deploy_app.yml --extra-vars "variable=value"
