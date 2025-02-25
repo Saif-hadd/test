@@ -22,6 +22,16 @@ jobs:
         sudo apt-get install -y python3-pip
         pip3 install ansible
 
+    - name: Install SSH client
+      run: sudo apt-get install -y openssh-client
+
+    - name: Set up SSH keys
+      run: |
+        mkdir -p ~/.ssh
+        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+        chmod 600 ~/.ssh/id_ed25519
+        ssh-keyscan -H 196.239.8.207 >> ~/.ssh/known_hosts  # Ajoute ton IP publique ici
+
     - name: Clean up Docker
       run: |
         sudo apt-get remove -y docker docker-engine docker.io containerd runc
@@ -39,3 +49,5 @@ jobs:
     - name: Run Ansible playbook
       run: |
         ansible-playbook -i inventory.ini deploy_app.yml --extra-vars "ansible_become_pass=saif"
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
